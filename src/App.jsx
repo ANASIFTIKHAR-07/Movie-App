@@ -7,7 +7,7 @@ const App = () => {
 
       <div className="wrapper">
         <header>
-          <img src="./assets/hero.png" alt="Hero Banner" />
+          <img src="/hero-img.png" alt="Hero Banner" />
           <h1>
             Find <span className="text-gradient">Movies</span> That You'll Enjoy
             Without Hassle
