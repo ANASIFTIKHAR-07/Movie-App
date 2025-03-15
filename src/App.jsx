@@ -7,13 +7,14 @@ const App = () => {
 
       <div className="wrapper">
         <header>
+          <img src="./assets/hero.png" alt="Hero Banner" />
           <h1>
             Find <span className="text-gradient">Movies</span> That You'll Enjoy
             Without Hassle
           </h1>
         </header>
       </div>
-      <p>Search</p>
+      <p> Search</p>
     </main>
   );
 };
