@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import Search from "./components/Search.jsx";
+
+const API_BASE_URL = 'https://api.themoviedb.org/3' 
+const API_KEY = process.env.REACT_APP_TMDB_API_KEY
 
 const App = () => {
 
-  const [searchTerm, setSearchTerm] = useState('')  
+  const [searchTerm, setSearchTerm] = useState('') 
+  
+  useEffect(()=> {
+
+  }, [])
   return (
     <main>
       <div className="pattern " />
