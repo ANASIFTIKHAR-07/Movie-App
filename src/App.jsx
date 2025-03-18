@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from "react";
 import Search from "./components/Search.jsx";
-
-const API_BASE_URL = 'https://api.themoviedb.org/3' 
-const API_KEY = import.meta.env.VITE_TMDB_API_KEY  
+const API_BASE_URL = 'https://api.themoviedb.org/3'
+const API_KEY = import.meta.env.VITE_TMDB_API_KEY
+import Spinner from "./components/spinner.jsx"
 
 const API_OPTIONS = {
   method: 'GET',
@@ -14,14 +14,21 @@ const API_OPTIONS = {
 
 const App = () => {
 
-  const [searchTerm, setSearchTerm] = useState('') 
-
+  const [searchTerm, setSearchTerm] = useState('')
+  const [movies, setMovies] = useState([])
+  const [isLoading, setIsLoading] = useState(false)
   const [errorMessage, setErrorMessage] = useState('')
 
 
+
   const fetchMovies = async () => {
+
+    setIsLoading(true)
+    setErrorMessage('')
+    // setMovies([])
+
     try {
-      const endpoint =`${API_BASE_URL}/discover/movie?sort_by=popularity.desc`
+      const endpoint = `${API_BASE_URL}/discover/movie?sort_by=popularity.desc`
       const response = await fetch(endpoint, API_OPTIONS)
 
       if (!response.ok) {
@@ -29,17 +36,27 @@ const App = () => {
       }
 
       const data = await response.json()
-      console.log(data) 
-      
+
+      if (data.Response === 'False') {
+        setErrorMessage(data.Error || 'An error occurred while fetching movies.')
+        setMovies([])
+        return
+      }
+
+      setMovies(data.results)
+
+
     } catch (error) {
       console.error('Error fetching movies:', error)
       setErrorMessage('An error occurred while fetching movies.')
-    } 
+    } finally {
+      setIsLoading(false)
+    }
   }
-  
-  useEffect(()=> {
+
+  useEffect(() => {
     fetchMovies()
-  }, [])  
+  }, [])
   return (
     <main>
       <div className="pattern " />
@@ -51,12 +68,22 @@ const App = () => {
             Find <span className="text-gradient">Movies</span> That You'll Enjoy
             Without Hassle
           </h1>
-              <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm}/>
+          <Search searchTerm={searchTerm} setSearchTerm={setSearchTerm} />
         </header>
         <section className="all-movies">
-          <h2>All movies</h2> 
-
-          {errorMessage && <p className="error-message">{errorMessage}</p>} 
+          <h2 className="mt-[40px]">All movies</h2>
+          {isLoading ? (
+           <Spinner />
+          ) :
+          errorMessage?(
+            <p className="text-red-500"> {errorMessage} </p>
+          ) : (
+            <ul>
+              {movies.map((movie) => (
+               < p key={movie.id} className="text-white">{movie.title}</p>  
+              ))}
+            </ul>
+          )}
         </section>
       </div>
     </main>
