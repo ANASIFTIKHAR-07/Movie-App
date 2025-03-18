@@ -1,5 +1,6 @@
 import React from 'react'
 import Rating from '../assets/Rating.svg'
+import NoPoster from '../assets/No-Poster.png'
 
 const MovieCard = ({ movie:
     { title,
@@ -12,7 +13,7 @@ const MovieCard = ({ movie:
         <div className="movie-card">
             <img
                 src={poster_path ?
-                    `https://image.tmdb.org/t/p/w500/${poster_path}` : '/no-movie.png'}
+                    `https://image.tmdb.org/t/p/w500${poster_path}` : NoPoster}
                 alt={title}
             />
             <div className="mt-4">
